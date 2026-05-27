@@ -273,7 +273,7 @@ function try_step(step_no : nat, exit_wait : bool) -> bool = {
   }
 }
 
-function loop () : unit -> unit = {
+function loop () : unit -> nat = {
   var i : nat = 0;
   var step_no : nat = 0;
   while not(htif_done) do {
@@ -301,7 +301,13 @@ function loop () : unit -> unit = {
         i = 0;
       }
     }
-  }
+  };
+
+  let exit_val = unsigned(htif_exit_code);
+  if exit_val == 0
+    then print_endline("SUCCESS")
+    else print_int("FAILURE: ", exit_val);
+  return exit_val
 }
 
 // Termination measures for loops are not supported by the Lean backend, so they
